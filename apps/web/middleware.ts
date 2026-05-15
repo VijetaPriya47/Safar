@@ -5,11 +5,15 @@ const PROTECTED = ['/dashboard', '/rooms', '/groups', '/profile', '/journeys', '
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request })
+  const path = request.nextUrl.pathname
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) return response
+
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) => {
@@ -18,20 +22,20 @@ export async function middleware(request: NextRequest) {
           )
         },
       },
+    })
+
+    const { data: { user } } = await supabase.auth.getUser()
+    const isProtected = PROTECTED.some((p) => path.startsWith(p))
+
+    if (isProtected && !user) {
+      return NextResponse.redirect(new URL('/login', request.url))
     }
-  )
 
-  const { data: { user } } = await supabase.auth.getUser()
-  const path = request.nextUrl.pathname
-
-  const isProtected = PROTECTED.some((p) => path.startsWith(p))
-
-  if (isProtected && !user) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  if ((path === '/login' || path === '/') && user) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    if ((path === '/login' || path === '/') && user) {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+  } catch {
+    // fail open — let the request through if auth check errors
   }
 
   return response
