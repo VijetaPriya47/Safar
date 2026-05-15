@@ -6,5 +6,6 @@ import { config } from './config'
 // ws is required for Node 20 (no native WebSocket); Node 22+ doesn't need this
 export const supabase = createClient(config.supabaseUrl, config.supabaseServiceRoleKey, {
   auth: { persistSession: false },
-  realtime: { transport: ws },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  realtime: { transport: ws as any },
 })
