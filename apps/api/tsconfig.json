@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
-      "@safarmate/types": ["../../packages/types/src/index.ts"]
+      "@safarknots/types": ["../../packages/types/src/index.ts"]
     }
   },
   "include": ["src"],

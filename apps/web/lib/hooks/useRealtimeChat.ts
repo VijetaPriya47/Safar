@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getSupabaseClient } from '../supabase'
 import { api } from '../api'
-import type { MessageWithSender } from '@safarmate/types'
+import type { MessageWithSender } from '@safarknots/types'
 
 interface UseRealtimeChatOptions {
   roomId?: string

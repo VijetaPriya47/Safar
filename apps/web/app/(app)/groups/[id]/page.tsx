@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Avatar } from '@/components/ui/avatar'
 import { useGroup, useApproveMember } from '@/lib/hooks/useGroup'
 import { useAuthStore } from '@/stores/authStore'
-import type { PublicUser } from '@safarmate/types'
+import type { PublicUser } from '@safarknots/types'
 
 type Tab = 'chat' | 'members'
 

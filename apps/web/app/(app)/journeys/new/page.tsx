@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import type { CreateJourneyBody } from '@safarmate/types'
+import type { CreateJourneyBody } from '@safarknots/types'
 
 export default function NewJourneyPage() {
   const router = useRouter()

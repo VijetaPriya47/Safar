@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api'
-import type { User, PublicUser, UpdateProfileBody } from '@safarmate/types'
+import type { User, PublicUser, UpdateProfileBody } from '@safarknots/types'
 
 export function useMe() {
   return useQuery({

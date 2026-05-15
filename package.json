@@ -1,5 +1,5 @@
 {
-  "name": "safarmate",
+  "name": "safarknots",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -17,5 +17,6 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "packageManager": "npm@10.8.2"
 }

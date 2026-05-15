@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api'
-import type { Room, RoomDetail, Paginated } from '@safarmate/types'
+import type { Room, RoomDetail, Paginated } from '@safarknots/types'
 
 interface RoomsQuery {
   type?: string

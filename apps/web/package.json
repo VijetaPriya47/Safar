@@ -1,5 +1,5 @@
 {
-  "name": "@safarmate/web",
+  "name": "@safarknots/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@safarmate/types": "*",
+    "@safarknots/types": "*",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.2",
     "@tanstack/react-query": "^5.62.8",

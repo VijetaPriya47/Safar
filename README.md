@@ -1,4 +1,4 @@
-# SafarMate
+# SafarKnots
 
 Safety-first travel companion platform. Find travelers on your train or flight, form groups, and coordinate your journey.
 
@@ -16,7 +16,7 @@ Safety-first travel companion platform. Find travelers on your train or flight, 
 ## Project Structure
 
 ```
-safarmate/
+safarknots/
 ├── apps/
 │   ├── web/          # Next.js frontend → Vercel
 │   └── api/          # Hono REST API → Railway

@@ -16,7 +16,7 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./*"],
-      "@safarmate/types": ["../../packages/types/src/index.ts"]
+      "@safarknots/types": ["../../packages/types/src/index.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

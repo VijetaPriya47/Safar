@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { Session } from '@supabase/supabase-js'
-import type { User } from '@safarmate/types'
+import type { User } from '@safarknots/types'
 
 interface AuthState {
   session: Session | null

@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '*.supabase.co' },
     ],
   },
-  transpilePackages: ['@safarmate/types'],
+  transpilePackages: ['@safarknots/types'],
 }
 
 export default nextConfig

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Avatar } from '@/components/ui/avatar'
 import { useAuthStore } from '@/stores/authStore'
 import { useUpdateProfile } from '@/lib/hooks/useUser'
-import type { UpdateProfileBody, Gender } from '@safarmate/types'
+import type { UpdateProfileBody, Gender } from '@safarknots/types'
 
 export default function EditProfilePage() {
   const router = useRouter()

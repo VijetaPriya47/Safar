@@ -1,5 +1,5 @@
 {
-  "name": "@safarmate/api",
+  "name": "@safarknots/api",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "@safarmate/types": "*",
+    "@safarknots/types": "*",
     "@supabase/supabase-js": "^2.47.2",
     "dotenv": "^17.4.2",
     "hono": "^4.6.20",

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import type { PublicUser } from '@safarmate/types'
+import type { PublicUser } from '@safarknots/types'
 
 export function MemberList({ members }: { members: PublicUser[] }) {
   if (!members.length) return <p className="text-sm text-gray-500 py-4 text-center">No members yet.</p>

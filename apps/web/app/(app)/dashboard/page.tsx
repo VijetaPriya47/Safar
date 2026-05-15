@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { RoomCard } from '@/components/rooms/RoomCard'
 import { useAuthStore } from '@/stores/authStore'
 import { api } from '@/lib/api'
-import type { Journey, Room } from '@safarmate/types'
+import type { Journey, Room } from '@safarknots/types'
 
 export default function DashboardPage() {
   const user = useAuthStore((s) => s.user)

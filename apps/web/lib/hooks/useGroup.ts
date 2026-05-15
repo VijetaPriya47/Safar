@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api'
-import type { Group, GroupDetail, CreateGroupBody } from '@safarmate/types'
+import type { Group, GroupDetail, CreateGroupBody } from '@safarknots/types'
 
 export function useRoomGroups(roomId: string, filters?: { gender_filter?: string }) {
   const params = new URLSearchParams()

@@ -1,4 +1,4 @@
-import type { Room } from '@safarmate/types'
+import type { Room } from '@safarknots/types'
 import { supabase } from '../lib/supabase'
 
 // Find rooms that share the same destination on a given date

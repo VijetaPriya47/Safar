@@ -1,4 +1,4 @@
-import type { Group, GroupMember } from '@safarmate/types'
+import type { Group, GroupMember } from '@safarknots/types'
 import { supabase } from '../lib/supabase'
 
 export async function isRoomMember(roomId: string, userId: string): Promise<boolean> {

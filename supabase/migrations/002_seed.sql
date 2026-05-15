@@ -1,4 +1,4 @@
--- SafarMate seed data — generated 2026-05-16T09:58:23.483Z
+-- SafarKnots seed data — generated 2026-05-16T09:58:23.483Z
 -- 100 users · 20 rooms · 29 groups · 622 messages
 
 -- ── Users ──────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 import { Train, Plane, Route, ArrowRight, Users } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/lib/utils'
-import type { Room } from '@safarmate/types'
+import type { Room } from '@safarknots/types'
 
 const RoomIcon = ({ type }: { type: Room['room_type'] }) => {
   if (type === 'train') return <Train size={20} className="text-blue-600" />

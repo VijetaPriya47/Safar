@@ -306,7 +306,7 @@ rooms.forEach((room, ri) => {
 
 const lines = []
 
-lines.push(`-- SafarMate seed data — generated ${new Date().toISOString()}`)
+lines.push(`-- SafarKnots seed data — generated ${new Date().toISOString()}`)
 lines.push(`-- ${users.length} users · ${rooms.length} rooms · ${groups.length} groups · ${messages.length} messages`)
 lines.push('')
 
@@ -369,7 +369,7 @@ lines.push('')
 lines.push('-- Done!')
 
 const output = lines.join('\n')
-writeFileSync('/home/anya/Desktop/SafarMate/supabase/migrations/002_seed.sql', output)
+writeFileSync('/home/anya/Desktop/SafarKnots/supabase/migrations/002_seed.sql', output)
 console.log(`Generated:`)
 console.log(`  ${users.length} users`)
 console.log(`  ${rooms.length} rooms`)

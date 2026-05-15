@@ -6,7 +6,7 @@ export default function LandingPage() {
     <main className="min-h-screen bg-white">
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-        <span className="text-xl font-bold text-brand-600">SafarMate</span>
+        <span className="text-xl font-bold text-brand-600">SafarKnots</span>
         <Link
           href="/login"
           className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 transition-colors"

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Lock, Users } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import type { Group } from '@safarmate/types'
+import type { Group } from '@safarknots/types'
 
 const genderLabel: Record<Group['gender_filter'], string> = {
   all_boys: 'Boys only',

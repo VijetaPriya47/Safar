@@ -5,7 +5,7 @@ import { Modal } from '@/components/ui/modal'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useCreateGroup } from '@/lib/hooks/useGroup'
-import type { CreateGroupBody } from '@safarmate/types'
+import type { CreateGroupBody } from '@safarknots/types'
 
 interface CreateGroupModalProps {
   roomId: string

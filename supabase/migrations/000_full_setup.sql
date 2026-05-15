@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════
--- SafarMate — Initial Schema + RLS Policies
+-- SafarKnots — Initial Schema + RLS Policies
 -- ═══════════════════════════════════════════════════════════════
 
 -- ── Extensions ───────────────────────────────────────────────────────────────
@@ -340,7 +340,7 @@ CREATE POLICY "verifications_insert" ON verifications
 -- Add messages table to the supabase_realtime publication for live chat
 ALTER PUBLICATION supabase_realtime ADD TABLE messages;
 ALTER PUBLICATION supabase_realtime ADD TABLE group_members;
--- SafarMate seed data — generated 2026-05-16T09:58:23.483Z
+-- SafarKnots seed data — generated 2026-05-16T09:58:23.483Z
 -- 100 users · 20 rooms · 29 groups · 622 messages
 
 -- ── Users ──────────────────────────────────────────────────────────────

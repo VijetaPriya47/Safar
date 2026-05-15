@@ -3,10 +3,10 @@ import './globals.css'
 import { Providers } from './providers'
 
 export const metadata: Metadata = {
-  title: 'SafarMate — Find your travel buddies',
+  title: 'SafarKnots — Find your travel buddies',
   description: 'Discover travelers on your route, form safe groups, and coordinate your journey.',
   manifest: '/manifest.json',
-  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'SafarMate' },
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'SafarKnots' },
 }
 
 export const viewport: Viewport = {

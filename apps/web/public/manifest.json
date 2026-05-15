@@ -1,6 +1,6 @@
 {
-  "name": "SafarMate",
-  "short_name": "SafarMate",
+  "name": "SafarKnots",
+  "short_name": "SafarKnots",
   "description": "Find your travel companions",
   "start_url": "/dashboard",
   "display": "standalone",

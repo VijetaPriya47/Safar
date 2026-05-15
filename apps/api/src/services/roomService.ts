@@ -1,4 +1,4 @@
-import type { JourneyType, Room } from '@safarmate/types'
+import type { JourneyType, Room } from '@safarknots/types'
 import { supabase } from '../lib/supabase'
 
 function normalizeCity(city: string): string {

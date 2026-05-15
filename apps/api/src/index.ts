@@ -43,7 +43,7 @@ app.onError((err, c) => {
 })
 
 serve({ fetch: app.fetch, port: config.port }, (info) => {
-  console.log(`SafarMate API running on http://localhost:${info.port}`)
+  console.log(`SafarKnots API running on http://localhost:${info.port}`)
 })
 
 export default app

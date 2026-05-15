@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Avatar } from '@/components/ui/avatar'
 import { formatRelativeTime } from '@/lib/utils'
 import { cn } from '@/lib/utils'
-import type { MessageWithSender } from '@safarmate/types'
+import type { MessageWithSender } from '@safarknots/types'
 
 interface MessageBubbleProps {
   message: MessageWithSender
