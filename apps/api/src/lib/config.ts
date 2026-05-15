@@ -7,6 +7,8 @@ const required = (key: string): string => {
 export const config = {
   supabaseUrl: required('SUPABASE_URL'),
   supabaseServiceRoleKey: required('SUPABASE_SERVICE_ROLE_KEY'),
-  allowedOrigin: process.env['ALLOWED_ORIGIN'] ?? 'http://localhost:3000',
+  allowedOrigins: (process.env['ALLOWED_ORIGIN'] ?? 'http://localhost:3000')
+    .split(',')
+    .map((o) => o.trim()),
   port: parseInt(process.env['PORT'] ?? '3001', 10),
 }

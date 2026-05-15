@@ -18,7 +18,7 @@ app.use('*', logger())
 app.use(
   '*',
   cors({
-    origin: config.allowedOrigin,
+    origin: (origin) => config.allowedOrigins.includes(origin) ? origin : config.allowedOrigins[0],
     allowHeaders: ['Authorization', 'Content-Type'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
