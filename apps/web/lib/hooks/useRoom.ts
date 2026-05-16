@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api'
-import type { Room, RoomDetail, Paginated } from '@safarknots/types'
+import type { Room, RoomDetail, PublicUser, Group, Paginated } from '@safarknots/types'
 
 interface RoomsQuery {
   type?: string
@@ -30,7 +30,9 @@ export function useRooms(query: RoomsQuery = {}) {
 export function useRoom(id: string) {
   return useQuery({
     queryKey: ['rooms', id],
-    queryFn: () => api.get<{ room: RoomDetail }>(`/rooms/${id}`).then((r) => r.room),
+    queryFn: () =>
+      api.get<{ room: Room; members: PublicUser[]; groups: Group[] }>(`/rooms/${id}`)
+        .then((r) => ({ ...r.room, members: r.members, groups: r.groups }) as RoomDetail),
     enabled: !!id,
   })
 }
