@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if ((path === '/login' || path === '/') && user) {
+    if (path === '/login' && user) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   } catch {

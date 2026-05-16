@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Train, Shield, Users, ArrowRight } from 'lucide-react'
+import { Train, Shield, Users, ArrowRight, Search } from 'lucide-react'
 
 export default function LandingPage() {
   return (
@@ -31,15 +31,24 @@ export default function LandingPage() {
           coordinate plans, and journey together.
         </p>
 
-        <Link
-          href="/login"
-          className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-8 py-4 text-base font-semibold text-white hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/30"
-        >
-          Get started free
-          <ArrowRight size={18} />
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-8 py-4 text-base font-semibold text-white hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/30"
+          >
+            Get started free
+            <ArrowRight size={18} />
+          </Link>
+          <Link
+            href="/rooms"
+            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-8 py-4 text-base font-semibold text-gray-700 hover:border-brand-300 hover:text-brand-600 transition-colors"
+          >
+            <Search size={18} />
+            Browse rooms
+          </Link>
+        </div>
 
-        <p className="mt-4 text-xs text-gray-400">No credit card required · Google login</p>
+        <p className="mt-4 text-xs text-gray-400">No account needed to browse · Sign in with Google to join</p>
       </section>
 
       {/* Features */}
@@ -49,20 +58,23 @@ export default function LandingPage() {
             {
               icon: Train,
               title: 'Train & flight rooms',
-              desc: 'Join a shared room the moment you add your journey. Instantly see who else is traveling with you.',
+              desc: 'Browse active rooms for your route. See who else is traveling — no sign-in required.',
+              href: '/rooms',
             },
             {
               icon: Users,
               title: 'Private groups',
               desc: 'Create or join travel groups with filters for gender, college batch, and group size.',
+              href: '/login',
             },
             {
               icon: Shield,
               title: 'Safe by design',
               desc: 'Contact details stay hidden until you join a group. Verified PNR and student badges.',
+              href: '/login',
             },
-          ].map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+          ].map(({ icon: Icon, title, desc, href }) => (
+            <Link key={title} href={href} className="flex gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm hover:border-brand-200 hover:shadow-md transition-all">
               <div className="shrink-0 h-10 w-10 rounded-lg bg-brand-50 flex items-center justify-center">
                 <Icon size={20} className="text-brand-600" />
               </div>
@@ -70,7 +82,7 @@ export default function LandingPage() {
                 <p className="font-semibold text-gray-900 mb-1">{title}</p>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
