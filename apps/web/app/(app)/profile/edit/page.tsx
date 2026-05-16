@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { getSupabaseClient } from '@/lib/supabase'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Avatar } from '@/components/ui/avatar'
@@ -32,11 +31,6 @@ export default function EditProfilePage() {
       })
     }
   }, [user])
-
-  const handleSignOut = async () => {
-    await getSupabaseClient().auth.signOut()
-    router.push('/')
-  }
 
   const isLoading = useAuthStore((s) => s.isLoading)
 
@@ -126,14 +120,6 @@ export default function EditProfilePage() {
 
         <Button type="submit" isLoading={isPending}>Save changes</Button>
       </form>
-
-      <Button
-        variant="ghost"
-        className="w-full mt-4 text-red-500 hover:text-red-600 hover:bg-red-50"
-        onClick={handleSignOut}
-      >
-        Sign out
-      </Button>
     </div>
   )
 }
