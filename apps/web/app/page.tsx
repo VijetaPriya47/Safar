@@ -1,18 +1,38 @@
+'use client'
+
 import Link from 'next/link'
 import { Train, Shield, Users, ArrowRight, Search } from 'lucide-react'
+import { Avatar } from '@/components/ui/avatar'
+import { useAuthStore } from '@/stores/authStore'
 
 export default function LandingPage() {
+  const user = useAuthStore((s) => s.user)
+  const isLoading = useAuthStore((s) => s.isLoading)
+
   return (
     <main className="min-h-screen bg-white">
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
         <span className="text-xl font-bold text-brand-600">SafarKnots</span>
-        <Link
-          href="/login"
-          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 transition-colors"
-        >
-          Sign in
-        </Link>
+
+        {!isLoading && (
+          user ? (
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 hover:border-brand-300 hover:text-brand-600 transition-colors"
+            >
+              <Avatar name={user.name} avatarUrl={user.avatar_url} size="sm" />
+              <span className="max-w-[120px] truncate">{user.name}</span>
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 transition-colors"
+            >
+              Sign in
+            </Link>
+          )
+        )}
       </nav>
 
       {/* Hero */}
@@ -32,13 +52,23 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-8 py-4 text-base font-semibold text-white hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/30"
-          >
-            Get started free
-            <ArrowRight size={18} />
-          </Link>
+          {user ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-8 py-4 text-base font-semibold text-white hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/30"
+            >
+              Go to my profile
+              <ArrowRight size={18} />
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-8 py-4 text-base font-semibold text-white hover:bg-brand-700 transition-colors shadow-lg shadow-brand-600/30"
+            >
+              Get started free
+              <ArrowRight size={18} />
+            </Link>
+          )}
           <Link
             href="/rooms"
             className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-8 py-4 text-base font-semibold text-gray-700 hover:border-brand-300 hover:text-brand-600 transition-colors"
@@ -65,13 +95,13 @@ export default function LandingPage() {
               icon: Users,
               title: 'Private groups',
               desc: 'Create or join travel groups with filters for gender, college batch, and group size.',
-              href: '/login',
+              href: user ? '/rooms' : '/login',
             },
             {
               icon: Shield,
               title: 'Safe by design',
               desc: 'Contact details stay hidden until you join a group. Verified PNR and student badges.',
-              href: '/login',
+              href: user ? '/verify' : '/login',
             },
           ].map(({ icon: Icon, title, desc, href }) => (
             <Link key={title} href={href} className="flex gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm hover:border-brand-200 hover:shadow-md transition-all">
