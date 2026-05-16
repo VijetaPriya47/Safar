@@ -2,106 +2,149 @@
 
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
-import { PlusCircle, ArrowRight, Train } from 'lucide-react'
+import { CheckCircle, XCircle, Users, Train, Plane, Pencil } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { RoomCard } from '@/components/rooms/RoomCard'
+import { Badge } from '@/components/ui/badge'
 import { useAuthStore } from '@/stores/authStore'
 import { api } from '@/lib/api'
-import type { Journey, Room } from '@safarknots/types'
 
-export default function DashboardPage() {
+export default function ProfilePage() {
   const user = useAuthStore((s) => s.user)
+  const isLoading = useAuthStore((s) => s.isLoading)
 
-  const { data: journeysData } = useQuery({
-    queryKey: ['my-journeys'],
-    queryFn: () => api.get<{ journeys: (Journey & { room?: Room })[] }>('/users/me/journeys'),
+  const { data } = useQuery({
+    queryKey: ['users', 'me'],
+    queryFn: () =>
+      api.get<{
+        user: any
+        verified: { college: boolean; pnr: boolean }
+        groups_count: number
+        groups: any[]
+      }>('/users/me'),
     enabled: !!user,
   })
 
-  const journeys = journeysData?.journeys ?? []
+  if (isLoading) {
+    return (
+      <div className="px-4 py-6 space-y-4 max-w-lg mx-auto">
+        <div className="h-24 rounded-2xl bg-gray-100 animate-pulse" />
+        <div className="h-20 rounded-2xl bg-gray-100 animate-pulse" />
+        <div className="h-32 rounded-2xl bg-gray-100 animate-pulse" />
+      </div>
+    )
+  }
+
+  const profile = data?.user ?? user
+  const verified = data?.verified
+  const groups = data?.groups ?? []
 
   return (
-    <div className="flex flex-col gap-0">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-100 px-4 py-4">
-        <div className="flex items-center gap-3">
-          {user && <Avatar name={user.name} avatarUrl={user.avatar_url} size="md" />}
-          <div className="min-w-0">
-            <p className="text-sm text-gray-500">Good to see you,</p>
-            <p className="text-base font-semibold text-gray-900 truncate">{user?.name ?? '…'}</p>
+    <div className="max-w-lg mx-auto px-4 py-6 space-y-5">
+      {/* Profile header */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="flex items-center gap-4">
+          <Avatar name={profile?.name ?? '?'} avatarUrl={profile?.avatar_url} size="lg" />
+          <div className="flex-1 min-w-0">
+            <p className="text-lg font-bold text-gray-900 truncate">{profile?.name ?? '—'}</p>
+            {profile?.college_name && (
+              <p className="text-sm text-gray-500 truncate">{profile.college_name}</p>
+            )}
           </div>
+          <Link
+            href="/profile/edit"
+            className="shrink-0 flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 hover:border-brand-300 hover:text-brand-600 transition-colors"
+          >
+            <Pencil size={13} />
+            Edit
+          </Link>
         </div>
+
+        {profile?.bio && (
+          <p className="mt-3 text-sm text-gray-600 leading-relaxed">{profile.bio}</p>
+        )}
       </div>
 
-      <div className="px-4 py-4 space-y-6">
-        {/* Add trip CTA */}
-        <Link
-          href="/journeys/new"
-          className="flex items-center gap-3 rounded-xl bg-brand-600 p-4 text-white shadow-lg shadow-brand-600/30"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">
-            <PlusCircle size={20} />
+      {/* Verification */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <h2 className="text-sm font-semibold text-gray-700 mb-3">Verification</h2>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            {verified?.college ? (
+              <CheckCircle size={16} className="text-green-500 shrink-0" />
+            ) : (
+              <XCircle size={16} className="text-gray-300 shrink-0" />
+            )}
+            <span className={`text-sm ${verified?.college ? 'text-green-700 font-medium' : 'text-gray-400'}`}>
+              College verified
+            </span>
           </div>
-          <div className="flex-1">
-            <p className="font-semibold">Add a new journey</p>
-            <p className="text-sm text-blue-100">Find travelers on your route</p>
+          <div className="flex items-center gap-2">
+            {verified?.pnr ? (
+              <CheckCircle size={16} className="text-green-500 shrink-0" />
+            ) : (
+              <XCircle size={16} className="text-gray-300 shrink-0" />
+            )}
+            <span className={`text-sm ${verified?.pnr ? 'text-green-700 font-medium' : 'text-gray-400'}`}>
+              PNR verified
+            </span>
           </div>
-          <ArrowRight size={18} className="text-blue-200" />
-        </Link>
+        </div>
+        {(!verified?.college || !verified?.pnr) && (
+          <Link href="/verify" className="mt-3 inline-block text-xs text-brand-600 font-medium hover:underline">
+            Get verified →
+          </Link>
+        )}
+      </div>
 
-        {/* My journeys */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold text-gray-900">My journeys</h2>
-            <Link href="/rooms" className="text-sm text-brand-600 font-medium">Browse all</Link>
-          </div>
+      {/* Groups joined */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold text-gray-700">
+            Groups joined
+            <span className="ml-2 text-xs font-normal text-gray-400">({data?.groups_count ?? 0})</span>
+          </h2>
+          <Link href="/rooms" className="text-xs text-brand-600 font-medium hover:underline">
+            Browse rooms
+          </Link>
+        </div>
 
-          {journeys.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-gray-200 py-8 text-center">
-              <Train size={32} className="text-gray-300" />
-              <p className="text-sm text-gray-500">No journeys yet</p>
-              <Link href="/journeys/new" className="inline-flex items-center justify-center rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700 transition-colors">
-                Add your first journey
-              </Link>
-            </div>
-          ) : (
-            <div className="grid gap-3">
-              {journeys.map((j) => (
-                <div key={j.id} className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {j.source} → {j.destination}
+        {groups.length === 0 ? (
+          <div className="text-center py-6">
+            <Users size={28} className="text-gray-200 mx-auto mb-2" />
+            <p className="text-sm text-gray-400">No groups yet</p>
+            <Link href="/rooms" className="mt-2 inline-block text-xs text-brand-600 font-medium hover:underline">
+              Find a room to join
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {groups.map((m: any) => {
+              const group = m.group
+              const room = group?.room
+              return (
+                <Link
+                  key={group?.id}
+                  href={`/groups/${group?.id}`}
+                  className="flex items-start gap-3 rounded-xl border border-gray-100 p-3 hover:border-brand-200 transition-colors"
+                >
+                  <div className="shrink-0 h-8 w-8 rounded-lg bg-brand-50 flex items-center justify-center">
+                    {room?.room_type === 'flight'
+                      ? <Plane size={15} className="text-brand-600" />
+                      : <Train size={15} className="text-brand-600" />}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{group?.name}</p>
+                    {room && (
+                      <p className="text-xs text-gray-400 truncate">
+                        {room.source} → {room.destination} · {room.journey_date}
                       </p>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {j.journey_type} · {j.journey_date}
-                      </p>
-                    </div>
-                    {j.train_number && (
-                      <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
-                        {j.train_number}
-                      </span>
                     )}
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Browse rooms */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold text-gray-900">Explore rooms</h2>
+                </Link>
+              )
+            })}
           </div>
-          <Link href="/rooms" className="block">
-            <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
-              <p className="text-sm text-gray-700 font-medium">Browse all travel rooms →</p>
-              <p className="text-xs text-gray-400 mt-1">Filter by train, flight, route, date</p>
-            </div>
-          </Link>
-        </section>
+        )}
       </div>
     </div>
   )

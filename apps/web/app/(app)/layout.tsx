@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import { Home, Search, User, PlusCircle, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 const navItems = [
-  { href: '/dashboard', icon: Home, label: 'Home' },
+  { href: '/', icon: Home, label: 'Home' },
   { href: '/rooms', icon: Search, label: 'Browse' },
   { href: '/journeys/new', icon: PlusCircle, label: 'Add trip' },
-  { href: '/profile/edit', icon: User, label: 'Profile' },
+  { href: '/dashboard', icon: User, label: 'Profile' },
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -22,7 +22,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <nav className="fixed bottom-0 left-0 right-0 border-t border-gray-100 bg-white pb-safe z-40">
         <div className="flex items-center justify-around px-2 pt-2 pb-1">
           {navItems.map(({ href, icon: Icon, label }) => {
-            const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
+            const isActive = pathname === href || (href !== '/' && pathname.startsWith(href))
             return (
               <Link
                 key={href}
