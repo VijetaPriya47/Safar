@@ -4,8 +4,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Search, User, PlusCircle, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { getSupabaseClient } from '@/lib/supabase'
-
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Home' },
   { href: '/rooms', icon: Search, label: 'Browse' },
@@ -15,11 +13,6 @@ const navItems = [
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-
-  const handleSignOut = async () => {
-    await getSupabaseClient().auth.signOut()
-    window.location.href = '/'
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -44,13 +37,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </Link>
             )
           })}
-          <button
-            onClick={handleSignOut}
+          <a
+            href="/auth/signout"
             className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors text-gray-400 hover:text-red-500"
           >
             <LogOut size={22} strokeWidth={1.5} />
             <span className="text-[10px] font-medium">Sign out</span>
-          </button>
+          </a>
         </div>
       </nav>
     </div>
