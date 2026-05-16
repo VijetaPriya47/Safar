@@ -56,7 +56,17 @@ export default function EditProfilePage() {
     )
   }
 
-  if (!user) return null
+  if (!user) return (
+    <div className="max-w-md mx-auto px-4 py-6 text-center">
+      <p className="text-sm text-red-500 mb-3">Could not load your profile. Please try refreshing the page.</p>
+      <button
+        onClick={() => window.location.reload()}
+        className="text-sm text-brand-600 underline"
+      >
+        Refresh
+      </button>
+    </div>
+  )
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">

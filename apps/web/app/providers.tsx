@@ -18,21 +18,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const supabase = getSupabaseClient()
 
-    supabase.auth.getSession().then(async ({ data }) => {
-      setSession(data.session)
-      if (data.session) {
-        try {
-          const r = await api.get<{ user: any }>('/auth/me')
-          setUser(r.user)
-        } catch {}
-      }
-      setIsLoading(false)
-    })
-
+    // Single source of truth for auth state — onAuthStateChange fires INITIAL_SESSION
+    // immediately on subscribe, so getSession() is not needed for initialization.
+    // This avoids a race condition where getSession() calls /auth/me before
+    // sync-profile has created the user row on the first sign-in.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session)
       if (session) {
-        // Sync profile on first sign-in
         if (event === 'SIGNED_IN') {
           const googleUser = session.user
           await api.post('/auth/sync-profile', {
@@ -42,10 +34,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
             google_id: googleUser.id,
           }).catch(() => {})
         }
-        api.get<{ user: any }>('/auth/me').then((r) => setUser(r.user)).catch(() => {})
+        try {
+          const r = await api.get<{ user: any }>('/auth/me')
+          setUser(r.user)
+        } catch {
+          setUser(null)
+        }
       } else {
         clear()
       }
+      setIsLoading(false)
     })
 
     return () => subscription.unsubscribe()

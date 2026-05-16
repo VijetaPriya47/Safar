@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { Shield, GraduationCap, Flag, Ban } from 'lucide-react'
+import { Flag, Ban } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -13,7 +13,7 @@ import { useState } from 'react'
 
 export default function ProfilePage() {
   const { id } = useParams<{ id: string }>()
-  const { data: profile, isLoading } = useUser(id)
+  const { data: profile, isLoading, isError } = useUser(id)
   const currentUser = useAuthStore((s) => s.user)
   const { mutate: blockUser } = useBlockUser()
   const [reported, setReported] = useState(false)
@@ -29,6 +29,7 @@ export default function ProfilePage() {
   })
 
   if (isLoading) return <div className="flex items-center justify-center h-screen text-sm text-gray-400">Loading…</div>
+  if (isError) return <div className="flex items-center justify-center h-screen text-sm text-red-500">Failed to load profile. Check your connection and try again.</div>
   if (!profile) return <div className="flex items-center justify-center h-screen text-sm text-red-500">User not found</div>
 
   const isOwnProfile = currentUser?.id === id
