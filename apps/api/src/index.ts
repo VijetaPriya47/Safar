@@ -42,8 +42,8 @@ app.onError((err, c) => {
   return c.json({ error: 'Internal server error' }, 500)
 })
 
-serve({ fetch: app.fetch, port: config.port }, (info) => {
-  console.log(`SafarKnots API running on http://localhost:${info.port}`)
+serve({ fetch: app.fetch, port: config.port, hostname: '0.0.0.0' }, (info) => {
+  console.log(`SafarKnots API running on http://${info.address}:${info.port}`)
 })
 
 export default app
