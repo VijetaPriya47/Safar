@@ -25,7 +25,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session)
       if (session) {
-        if (event === 'SIGNED_IN') {
+        // Sync on SIGNED_IN (new login) and INITIAL_SESSION (returning visit).
+        // The upsert is idempotent, so it's safe to call on each fresh session load.
+        if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
           const googleUser = session.user
           await api.post('/auth/sync-profile', {
             name: googleUser.user_metadata['full_name'] ?? googleUser.email,
