@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { Home, Search, User, PlusCircle, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getSupabaseClient } from '@/lib/supabase'
@@ -15,11 +15,10 @@ const navItems = [
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const router = useRouter()
 
   const handleSignOut = async () => {
     await getSupabaseClient().auth.signOut()
-    router.push('/')
+    window.location.href = '/'
   }
 
   return (
