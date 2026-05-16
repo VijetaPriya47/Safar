@@ -15,6 +15,38 @@ const updateProfileSchema = z.object({
   college_name: z.string().max(200).optional(),
 })
 
+app.get('/me', requireAuth, async (c) => {
+  const user = c.get('user')
+
+  const [{ data: profile, error }, { data: memberships }] = await Promise.all([
+    supabase.from('users').select('*').eq('id', user.id).single(),
+    supabase
+      .from('group_members')
+      .select(`
+        status,
+        approved_at,
+        group:groups!group_id(
+          id, name, description, gender_filter, member_count,
+          room:rooms!room_id(id, room_type, identifier, source, destination, journey_date)
+        )
+      `)
+      .eq('user_id', user.id)
+      .eq('status', 'approved'),
+  ])
+
+  if (error || !profile) return c.json({ error: 'User not found' }, 404)
+
+  return c.json({
+    user: profile,
+    verified: {
+      college: profile.college_verified,
+      pnr: profile.pnr_verified,
+    },
+    groups_count: (memberships ?? []).length,
+    groups: memberships ?? [],
+  })
+})
+
 app.get('/me/journeys', requireAuth, async (c) => {
   const user = c.get('user')
   const { data, error } = await supabase

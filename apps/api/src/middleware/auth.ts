@@ -14,6 +14,18 @@ declare module 'hono' {
   }
 }
 
+export const optionalAuth = createMiddleware(async (c: Context, next: Next) => {
+  const authHeader = c.req.header('Authorization')
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.slice(7)
+    const { data } = await supabase.auth.getUser(token)
+    if (data.user) {
+      c.set('user', { id: data.user.id, email: data.user.email! })
+    }
+  }
+  await next()
+})
+
 export const requireAuth = createMiddleware(async (c: Context, next: Next) => {
   const authHeader = c.req.header('Authorization')
   if (!authHeader?.startsWith('Bearer ')) {

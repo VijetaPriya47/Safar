@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
-import { requireAuth } from '../middleware/auth'
+import { requireAuth, optionalAuth } from '../middleware/auth'
 import { supabase } from '../lib/supabase'
 import { isRoomMember, isGroupMember, isGroupCreator, approveMember, rejectMember } from '../services/groupService'
 
@@ -53,7 +53,7 @@ app.post('/rooms/:roomId/groups', requireAuth, async (c) => {
 })
 
 // List groups in a room
-app.get('/rooms/:roomId/groups', requireAuth, async (c) => {
+app.get('/rooms/:roomId/groups', async (c) => {
   const { roomId } = c.req.param()
   const { gender_filter, visibility = 'public' } = c.req.query()
 
@@ -70,26 +70,32 @@ app.get('/rooms/:roomId/groups', requireAuth, async (c) => {
   return c.json({ groups: data })
 })
 
-// Get group detail
-app.get('/groups/:id', requireAuth, async (c) => {
+// Get group detail — public, but member list only visible to members/creator
+app.get('/groups/:id', optionalAuth, async (c) => {
   const { id: groupId } = c.req.param()
-  const userId = c.get('user').id
+  const userId = c.get('user')?.id
 
   const { data: group, error } = await supabase.from('groups').select('*').eq('id', groupId).single()
   if (error || !group) return c.json({ error: 'Group not found' }, 404)
 
-  const isMember = await isGroupMember(groupId, userId)
-  const isCreator = await isGroupCreator(groupId, userId)
-
-  // Members visible only if user is a member or creator
+  let isMember = false
+  let isCreator = false
   let members: unknown[] = []
-  if (isMember || isCreator) {
-    const { data } = await supabase
-      .from('group_members')
-      .select(`*, user:users!user_id(${PUBLIC_USER_FIELDS})`)
-      .eq('group_id', groupId)
-      .in('status', isMember ? ['approved'] : ['approved', 'pending'])
-    members = data ?? []
+
+  if (userId) {
+    ;[isMember, isCreator] = await Promise.all([
+      isGroupMember(groupId, userId),
+      isGroupCreator(groupId, userId),
+    ])
+
+    if (isMember || isCreator) {
+      const { data } = await supabase
+        .from('group_members')
+        .select(`*, user:users!user_id(${PUBLIC_USER_FIELDS})`)
+        .eq('group_id', groupId)
+        .in('status', isCreator ? ['approved', 'pending'] : ['approved'])
+      members = data ?? []
+    }
   }
 
   return c.json({ group, members, isMember, isCreator })

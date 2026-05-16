@@ -7,7 +7,7 @@ const app = new Hono()
 
 const PUBLIC_USER_FIELDS = 'id,name,avatar_url,bio,gender,college_name,college_verified,pnr_verified,created_at'
 
-app.get('/', requireAuth, async (c) => {
+app.get('/', async (c) => {
   const { type, date, source, destination, page = '1', limit = '20' } = c.req.query()
   const pageNum = Math.max(1, parseInt(page, 10))
   const limitNum = Math.min(50, parseInt(limit, 10))
@@ -28,7 +28,7 @@ app.get('/', requireAuth, async (c) => {
   return c.json({ rooms: data, total: count ?? 0, page: pageNum, limit: limitNum })
 })
 
-app.get('/:id', requireAuth, async (c) => {
+app.get('/:id', async (c) => {
   const { id } = c.req.param()
 
   const [{ data: room, error: roomErr }, { data: membersData, error: membersErr }, { data: groups, error: groupsErr }] =
