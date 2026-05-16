@@ -9,6 +9,7 @@ import { GroupCard } from '@/components/groups/GroupCard'
 import { ChatWindow } from '@/components/chat/ChatWindow'
 import { CreateGroupModal } from '@/components/groups/CreateGroupModal'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 import { useRoom, useJoinRoom } from '@/lib/hooks/useRoom'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -19,6 +20,7 @@ export default function RoomPage() {
   const [tab, setTab] = useState<Tab>('chat')
   const [showCreateGroup, setShowCreateGroup] = useState(false)
 
+  const router = useRouter()
   const { data: room, isLoading } = useRoom(id)
   const { mutate: joinRoom, isPending: isJoining } = useJoinRoom()
   const user = useAuthStore((s) => s.user)
@@ -58,8 +60,14 @@ export default function RoomPage() {
       {/* Join bar (non-members) */}
       {!isMember && (
         <div className="border-b border-orange-100 bg-orange-50 px-4 py-3 flex items-center justify-between">
-          <p className="text-sm text-orange-700">Join this room to chat</p>
-          <Button size="sm" isLoading={isJoining} onClick={() => joinRoom(id)}>Join room</Button>
+          <p className="text-sm text-orange-700">{user ? 'Join this room to chat' : 'Sign in to join and chat'}</p>
+          <Button
+            size="sm"
+            isLoading={isJoining}
+            onClick={() => user ? joinRoom(id) : router.push('/login')}
+          >
+            {user ? 'Join room' : 'Sign in'}
+          </Button>
         </div>
       )}
 
@@ -67,7 +75,9 @@ export default function RoomPage() {
       {tab === 'chat' && (
         isMember
           ? <ChatWindow roomId={id} />
-          : <div className="flex-1 flex items-center justify-center text-sm text-gray-400">Join the room to chat.</div>
+          : <div className="flex-1 flex items-center justify-center text-sm text-gray-400">
+              {user ? 'Join the room to chat.' : 'Sign in and join the room to chat.'}
+            </div>
       )}
 
       {tab === 'members' && (

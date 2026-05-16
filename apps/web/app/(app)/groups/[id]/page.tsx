@@ -105,7 +105,9 @@ export default function GroupPage() {
       {tab === 'chat' && (
         isMember || isCreator
           ? <ChatWindow groupId={id} />
-          : <div className="flex-1 flex items-center justify-center text-sm text-gray-400">Join the group to chat.</div>
+          : <div className="flex-1 flex items-center justify-center text-sm text-gray-400">
+              {user ? 'Join the group to chat.' : 'Sign in and join the group to chat.'}
+            </div>
       )}
 
       {tab === 'members' && (

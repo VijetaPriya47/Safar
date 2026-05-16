@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useJoinGroup } from '@/lib/hooks/useGroup'
+import { useAuthStore } from '@/stores/authStore'
 
 interface JoinRequestBadgeProps {
   groupId: string
@@ -13,8 +15,11 @@ interface JoinRequestBadgeProps {
 export function JoinRequestBadge({ groupId, isFull, onJoined }: JoinRequestBadgeProps) {
   const { mutate, isPending, isSuccess, data } = useJoinGroup()
   const [joined, setJoined] = useState(false)
+  const user = useAuthStore((s) => s.user)
+  const router = useRouter()
 
   const handleJoin = () => {
+    if (!user) { router.push('/login'); return }
     mutate(groupId, {
       onSuccess: (res: any) => {
         setJoined(true)
